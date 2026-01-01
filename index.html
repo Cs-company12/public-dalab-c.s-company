@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta http-equiv="Cache-Control" content="no-store"/>
 <title>C.S Company - Dalabka</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 <style>
 :root{
 --blue:#0b4f8b;--accent:#0b6fb5;--light:#f6f9fc;--card:#fff;--muted:#6b7280;--danger:#ff4d4f;--success:#16a34a;
@@ -55,9 +58,14 @@ footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
 .apk-section{margin-top:16px;padding:16px;background:#f9fdff;border-radius:8px;border:1px solid #e9f2fb}
 .apk-button{display:inline-block;margin:8px 8px 0 0;padding:8px 12px;background:var(--success);color:#fff;text-decoration:none;border-radius:6px;font-size:13px;transition:var(--transition)}
 .apk-button:hover{opacity:0.9;transform:translateY(-1px)}
+.loading{opacity:0.6;pointer-events:none}
+.online-status{position:fixed;top:10px;left:10px;background:var(--success);color:#fff;padding:6px 10px;border-radius:20px;font-size:12px;z-index:10000}
+.offline-status{background:var(--danger)}
 </style>
 </head>
 <body>
+<div class="online-status" id="onlineStatus">🌐 Online</div>
+
 <div class="wrap" role="main">
 <header>
 <div style="display:flex;align-items:center">
@@ -143,7 +151,7 @@ Supermarket: $150 (online/offline)<br>
 
 <footer>
 📞 <a href="tel:0613195143" style="color:var(--blue);font-weight:700">0613195143</a>
-<!-- NO ADMIN LINK -->
+<!-- NO ADMIN LINK - SECURITY -->
 </footer>
 </div>
 
@@ -151,6 +159,22 @@ Supermarket: $150 (online/offline)<br>
 <div id="mediaModal" class="modal"></div>
 
 <script>
+// 🔥 FIREBASE CONFIG - BEDDEL TAN KU DHEJI YOUR CREDENTIALS
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const storage = firebase.storage();
+
 const NEW_NUMBER = '0613195143';
 const prices = {
 pharmacy: {regular: 250, disconnect: 150},
@@ -167,9 +191,21 @@ Other: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER}
 };
 
 const elements = {};
-['name','phone','region','product','payment','price','choosen','note','regionBox','payBtn','place','calc','shareBtn','mediaPreview','notificationBanner','headerLogo','apkLinks'].forEach(id => {
+['name','phone','region','product','payment','price','choosen','note','regionBox','payBtn','place','calc','shareBtn','mediaPreview','notificationBanner','headerLogo','apkLinks','onlineStatus'].forEach(id => {
 elements[id] = document.getElementById(id);
 });
+
+let isOnline = navigator.onLine;
+
+function updateOnlineStatus(){
+isOnline = navigator.onLine;
+elements.onlineStatus.textContent = isOnline ? '🌐 Online' : '❌ Offline';
+elements.onlineStatus.className = isOnline ? 'online-status' : 'online-status offline-status';
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
 
 function isThursday(){ return new Date().getDay() === 4; }
 function formatPrice(p){ return `$${p}`; }
@@ -190,11 +226,13 @@ setTimeout(() => elements.regionBox.style.display = 'none', 7000);
 }
 
 function loadHeaderLogo(){
-const logoData = localStorage.getItem('cs_logo_image');
-if(logoData){
-elements.headerLogo.src = logoData;
+db.ref('media/logo').once('value', snapshot => {
+const data = snapshot.val();
+if(data && data.url){
+elements.headerLogo.src = data.url;
 elements.headerLogo.style.display = 'block';
 }
+});
 }
 
 function loadMediaPreview(){
@@ -205,53 +243,58 @@ preview.style.display = 'none';
 
 if(!product) return;
 
-if(product === 'supermarket'){
-// Show image
-const imgData = localStorage.getItem('cs_supermarket_image');
-if(imgData){
+// Load image
+db.ref(`media/images/${product}`).once('value', snapshot => {
+const data = snapshot.val();
+if(data && data.url){
 const img = document.createElement('img');
-img.src = imgData;
+img.src = data.url;
 img.className = 'img-preview';
-img.onclick = () => openModal('image', imgData);
+img.onclick = () => openModal('image', data.url);
 preview.appendChild(img);
 preview.style.display = 'block';
 }
-// Show video
-const videoData = localStorage.getItem('cs_supermarket_video');
-if(videoData){
+});
+
+// Load video for supermarket
+if(product === 'supermarket'){
+db.ref('media/videos/supermarket').once('value', snapshot => {
+const data = snapshot.val();
+if(data && data.url){
 const video = document.createElement('video');
-video.src = videoData;
+video.src = data.url;
 video.className = 'video-preview';
 video.controls = true;
-video.onclick = () => openModal('video', videoData);
+video.onclick = () => openModal('video', data.url);
 preview.appendChild(video);
 preview.style.display = 'block';
 }
-} else {
-// Show other system images
-const imgData = localStorage.getItem(`cs_${product}_image`);
-if(imgData){
-const img = document.createElement('img');
-img.src = imgData;
-img.className = 'img-preview';
-img.onclick = () => openModal('image', imgData);
-preview.appendChild(img);
-preview.style.display = 'block';
-}
+});
 }
 }
 
 function loadAPKLinks(){
-const apks = JSON.parse(localStorage.getItem('cs_apk_files') || '{}');
+db.ref('apks').once('value', snapshot => {
+const apks = snapshot.val() || {};
 const linksContainer = elements.apkLinks;
 linksContainer.innerHTML = '';
+
+const systemNames = {
+pharmacy: 'Pharmacy System',
+hospital: 'Hospital System',
+supermarket: 'Supermarket System'
+};
+
 Object.entries(apks).forEach(([system, data]) => {
+if(data && data.url){
 const link = document.createElement('a');
-link.href = data.data;
+link.href = data.url;
 link.download = data.name;
 link.className = 'apk-button';
-link.textContent = `📱 Download ${system} APK`;
+link.textContent = `📱 Download ${systemNames[system] || system} APK`;
 linksContainer.appendChild(link);
+}
+});
 });
 }
 
@@ -280,18 +323,13 @@ if(region) showRegionBox(`Goobtaada waa ${region} — code-ka bixinta ayaa la di
 return final;
 }
 
-// Load notifications
-(function loadNotifications(){
-try {
-const notif = localStorage.getItem('cs_shared_notification');
-if(notif){
-const data = JSON.parse(notif);
-if(Date.now() - data.time < 7*24*60*60*1000){
+// Load broadcast message
+db.ref('broadcasts/current').on('value', snapshot => {
+const data = snapshot.val();
+if(data && data.message && (Date.now() - data.time < 7*24*60*60*1000)){
 showNotification(data.message, data.type || 'info');
 }
-}
-} catch(e){}
-})();
+});
 
 // Event Listeners
 elements.calc.addEventListener('click', () => calcPrice());
@@ -309,17 +347,20 @@ try{ window.location.href = 'tel:' + encodeURIComponent(ussd); }catch(e){}
 });
 
 elements.place.addEventListener('click', function(){
+if(!isOnline){ alert('❌ Internet dhowro si aad u dalbato!'); return; }
 const name = elements.name.value.trim(), phone = elements.phone.value.trim(), region = elements.region.value, prod = elements.product.value, payment = elements.payment.value;
 if(!name || !phone || !region || !prod){ alert('⚠️ Fadlan buuxi dhammaan qaybaha muhiimka ah.'); return; }
 const final = calcPrice();
 const order = {id: 'ORD' + Date.now(), name, phone, region, product: prod, payment, price: final, time: new Date().toISOString(), status: 'pending'};
-const existing = JSON.parse(localStorage.getItem('cs_orders') || '[]');
-existing.push(order);
-localStorage.setItem('cs_orders', JSON.stringify(existing));
+
+document.body.classList.add('loading');
+db.ref('orders').push(order).then(() => {
 alert('✅ Dalabkaaga waa la diiwaangeliyey. Haddii aad lacag dirtay, fadlan hubi invoice ama nala soo xiriir.');
 showRegionBox(`Dalabka waa la keydiyay. ID: ${order.id}`);
-localStorage.setItem('cs_order_updated', Date.now());
 elements.name.value = elements.phone.value = '';
+}).catch(error => {
+showNotification(`❌ Error: ${error.message}`, 'error');
+}).finally(() => document.body.classList.remove('loading'));
 });
 
 elements.shareBtn.addEventListener('click', function(){
@@ -338,16 +379,17 @@ prompt('Nuqul ka samee linkigan oo u dir macaamiisha:', link);
 // Modal click
 document.getElementById('mediaModal').addEventListener('click', closeModal);
 
+// Real-time updates
+db.ref('media').on('value', () => {
+loadHeaderLogo();
+if(elements.product.value) loadMediaPreview();
+});
+
+db.ref('apks').on('value', loadAPKLinks);
+
 // Load initial data
 loadHeaderLogo();
 loadAPKLinks();
-
-// Auto-refresh for media updates
-setInterval(() => {
-loadHeaderLogo();
-if(elements.product.value) loadMediaPreview();
-loadAPKLinks();
-}, 3000);
 
 // Prefill from URL
 (function prefill(){
