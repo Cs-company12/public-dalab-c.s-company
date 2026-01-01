@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<title>C.S Company - Dalabka</title>
+<style>
+:root{
+--blue:#0b4f8b;--accent:#0b6fb5;--light:#f6f9fc;--card:#fff;--muted:#6b7280;--danger:#ff4d4f;--success:#16a34a;
+--shadow:0 12px 30px rgba(11,79,139,0.08);--shadow-sm:0 6px 18px rgba(11,79,139,0.05);
+--radius:12px;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+*{box-sizing:border-box}
+body{background:var(--light);margin:0;padding:24px;display:flex;justify-content:center;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;color:#1e293b;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;width:100%;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeIn 0.5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+header{background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.header-logo{height:40px;width:auto;margin-right:12px;border-radius:4px}
+header h1{margin:0;font-size:20px;font-weight:700;display:flex;align-items:center}
+header .subtitle{opacity:0.9;font-size:13px}
+header .user{font-weight:800}
+main{display:grid;grid-template-columns:1fr 360px;gap:24px;padding:24px}
+@media(max-width:880px){main{grid-template-columns:1fr}}
+section h2{margin:0 0 18px 0;color:var(--blue);font-size:22px}
+label{display:block;font-weight:700;margin-top:16px;color:var(--muted)}
+input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #e6eef8;margin-top:6px;font-size:14px;transition:var(--transition)}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(11,111,181,0.18);border-color:var(--accent)}
+textarea{resize:vertical;min-height:100px}
+.btn{background:var(--blue);color:#fff;padding:12px 18px;border-radius:8px;border:none;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
+.btn:hover{opacity:0.95;transform:translateY(-1px)}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.btn.secondary{background:var(--accent)}
+.btn.success{background:var(--success)}
+.btn.danger{background:var(--danger)}
+.btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.summary{background:linear-gradient(135deg,#f4fbff,#e6f4ff);padding:20px;border-radius:var(--radius);border:1px solid #e9f2fb;position:sticky;top:20px}
+.summary h3{margin:0 0 12px 0;color:var(--blue)}
+.price{font-size:32px;font-weight:800;color:var(--blue);margin:12px 0}
+#note{display:none;background:#fff7f7;border-left:4px solid var(--danger);padding:12px;border-radius:6px;margin-top:12px;animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+#regionBox{display:none;position:fixed;bottom:24px;right:24px;background:var(--blue);color:#fff;padding:14px 16px;border-radius:var(--radius);box-shadow:var(--shadow);z-index:1000;animation:slideUp 0.3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+.notification-banner{background:var(--accent);color:#fff;padding:12px;border-radius:8px;margin-bottom:16px;display:none;animation:fadeIn 0.5s ease}
+.notification-banner.show{display:block}
+.img-preview{max-width:100%;border-radius:8px;margin-top:12px;border:1px solid #e6eef8;cursor:pointer;transition:var(--transition)}
+.img-preview:hover{transform:scale(1.02)}
+.video-preview{max-width:100%;border-radius:8px;margin-top:12px;box-shadow:var(--shadow-sm)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center}
+.modal.show{display:flex}
+.modal img{max-width:90%;max-height:90%;border-radius:var(--radius)}
+.modal video{max-width:90%;max-height:90%;border-radius:var(--radius)}
+.region-code{background:#e6f4ff;padding:8px;border-radius:6px;font-family:monospace;font-size:13px;display:block;margin:8px 0}
+.apk-section{margin-top:16px;padding:16px;background:#f9fdff;border-radius:8px;border:1px solid #e9f2fb}
+.apk-button{display:inline-block;margin:8px 8px 0 0;padding:8px 12px;background:var(--success);color:#fff;text-decoration:none;border-radius:6px;font-size:13px;transition:var(--transition)}
+.apk-button:hover{opacity:0.9;transform:translateY(-1px)}
+</style>
+</head>
+<body>
+<div class="wrap" role="main">
+<header>
+<div style="display:flex;align-items:center">
+<img id="headerLogo" class="header-logo" style="display:none" alt="Logo">
+<h1>C.S Company Official Portal</h1>
+</div>
+<div style="text-align:right">
+<div class="subtitle">Dalbo Pharmacy & Hospital Systems</div>
+<div class="user">Software Engineer</div>
+</div>
+</header>
+
+<!-- SHARED NOTIFICATION FROM ADMIN -->
+<div id="notificationBanner" class="notification-banner"></div>
+
+<main>
+<section>
+<h2>📝 Foomka Dalabka</h2>
+
+<label>Magaca (Shirkad / Qof)</label>
+<input id="name" placeholder="Magacaaga" autocomplete="name" required>
+
+<label>Number (Phone)</label>
+<input id="phone" placeholder="061 XXX XXXX" type="tel" autocomplete="tel" required>
+
+<label>Region (Gobolka)</label>
+<select id="region" required>
+<option value="">-- Dooro --</option>
+<option>Banadir</option><option>Puntland</option><option>Hargeysa</option>
+<option>Galmudug</option><option>Koonfur Galbeed</option><option>Other</option>
+</select>
+
+<label>Dooro System</label>
+<select id="product" required>
+<option value="">-- Dooro --</option>
+<option value="pharmacy">Pharmacy System</option>
+<option value="hospital">Hospital System</option>
+<option value="supermarket">Supermarket System</option>
+</select>
+
+<!-- MEDIA PREVIEW -->
+<div id="mediaPreview" style="display:none;margin-top:12px"></div>
+
+<label>Qaabka Bixinta</label>
+<select id="payment" required>
+<option value="online">Online (USSD)</option>
+<option value="disconnect">Disconnect / Offline</option>
+</select>
+
+<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+<button class="btn" id="calc">🧮 Xisaabi Qiimaha</button>
+<button class="btn success" id="place">💾 Dalbo & Keydi</button>
+</div>
+
+<div id="note"></div>
+</section>
+
+<aside class="summary">
+<h3>📦 Faahfaahinta Dalabka</h3>
+<div id="choosen">—</div>
+<div class="price" id="price">$0</div>
+
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn success" id="payBtn">💳 Bixi Hadda (USSD)</button>
+<button class="btn secondary" id="shareBtn">🔗 Linkiig u dir</button>
+</div>
+
+<div style="margin-top:14px;color:var(--muted);font-size:13px">
+<strong>Qiimaha:</strong><br>
+Pharmacy: $250 (online) / $150 (offline)<br>
+Hospital: $350 (online) / $250 (offline)<br>
+Supermarket: $150 (online/offline)<br>
+<em style="color:var(--blue)">📅 Khamiis = Discount gaar ah!</em>
+</div>
+
+<!-- APK DOWNLOAD SECTION -->
+<div class="apk-section">
+<h4 style="margin:0 0 10px 0;color:var(--blue)">📱 Download APK</h4>
+<div id="apkLinks"></div>
+</div>
+</aside>
+</main>
+
+<footer>
+📞 <a href="tel:0613195143" style="color:var(--blue);font-weight:700">0613195143</a>
+<!-- NO ADMIN LINK -->
+</footer>
+</div>
+
+<div id="regionBox"></div>
+<div id="mediaModal" class="modal"></div>
+
+<script>
+const NEW_NUMBER = '0613195143';
+const prices = {
+pharmacy: {regular: 250, disconnect: 150},
+hospital: {regular: 350, disconnect: 250},
+supermarket: {regular: 150, disconnect: 150}
+};
+const regionCodes = {
+Banadir: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER},
+Puntland: {code: `*883*${NEW_NUMBER}*`, tel: NEW_NUMBER},
+Hargeysa: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER},
+Galmudug: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER},
+'Koonfur Galbeed': {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER},
+Other: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER}
+};
+
+const elements = {};
+['name','phone','region','product','payment','price','choosen','note','regionBox','payBtn','place','calc','shareBtn','mediaPreview','notificationBanner','headerLogo','apkLinks'].forEach(id => {
+elements[id] = document.getElementById(id);
+});
+
+function isThursday(){ return new Date().getDay() === 4; }
+function formatPrice(p){ return `$${p}`; }
+
+function showNotification(msg, type = 'info'){
+const banner = elements.notificationBanner;
+banner.textContent = msg;
+banner.className = `notification-banner show ${type}`;
+setTimeout(() => banner.classList.remove('show'), 8000);
+}
+
+function showRegionBox(text){
+elements.regionBox.innerHTML = `📍 ${text} &nbsp; 
+<a href="https://wa.me/${NEW_NUMBER}" target="_blank" style="color:#fff;text-decoration:underline;margin-left:8px">WhatsApp</a> 
+<a href="tel:${NEW_NUMBER}" style="color:#fff;text-decoration:underline;margin-left:8px">Wac</a>`;
+elements.regionBox.style.display = 'block';
+setTimeout(() => elements.regionBox.style.display = 'none', 7000);
+}
+
+function loadHeaderLogo(){
+const logoData = localStorage.getItem('cs_logo_image');
+if(logoData){
+elements.headerLogo.src = logoData;
+elements.headerLogo.style.display = 'block';
+}
+}
+
+function loadMediaPreview(){
+const product = elements.product.value;
+const preview = elements.mediaPreview;
+preview.innerHTML = '';
+preview.style.display = 'none';
+
+if(!product) return;
+
+if(product === 'supermarket'){
+// Show image
+const imgData = localStorage.getItem('cs_supermarket_image');
+if(imgData){
+const img = document.createElement('img');
+img.src = imgData;
+img.className = 'img-preview';
+img.onclick = () => openModal('image', imgData);
+preview.appendChild(img);
+preview.style.display = 'block';
+}
+// Show video
+const videoData = localStorage.getItem('cs_supermarket_video');
+if(videoData){
+const video = document.createElement('video');
+video.src = videoData;
+video.className = 'video-preview';
+video.controls = true;
+video.onclick = () => openModal('video', videoData);
+preview.appendChild(video);
+preview.style.display = 'block';
+}
+} else {
+// Show other system images
+const imgData = localStorage.getItem(`cs_${product}_image`);
+if(imgData){
+const img = document.createElement('img');
+img.src = imgData;
+img.className = 'img-preview';
+img.onclick = () => openModal('image', imgData);
+preview.appendChild(img);
+preview.style.display = 'block';
+}
+}
+}
+
+function loadAPKLinks(){
+const apks = JSON.parse(localStorage.getItem('cs_apk_files') || '{}');
+const linksContainer = elements.apkLinks;
+linksContainer.innerHTML = '';
+Object.entries(apks).forEach(([system, data]) => {
+const link = document.createElement('a');
+link.href = data.data;
+link.download = data.name;
+link.className = 'apk-button';
+link.textContent = `📱 Download ${system} APK`;
+linksContainer.appendChild(link);
+});
+}
+
+function openModal(type, src){
+const modal = document.getElementById('mediaModal');
+if(type === 'image'){
+modal.innerHTML = `<img src="${src}" alt="Preview" style="max-width:90%;max-height:90%;border-radius:12px">`;
+} else {
+modal.innerHTML = `<video src="${src}" controls autoplay style="max-width:90%;max-height:90%;border-radius:12px"></video>`;
+}
+modal.classList.add('show');
+}
+
+function closeModal(){
+document.getElementById('mediaModal').classList.remove('show');
+}
+
+function calcPrice(){
+const prod = elements.product.value, pay = elements.payment.value, region = elements.region.value;
+if(!prod){ alert('⚠️ Fadlan dooro product'); return null; }
+let final = pay === 'disconnect' ? prices[prod].disconnect : prices[prod].regular;
+if(isThursday() && prod !== 'supermarket') final = Math.min(final, prices[prod].disconnect);
+elements.price.innerText = formatPrice(final);
+elements.choosen.innerText = `${prod==='pharmacy'?'Pharmacy System':prod==='hospital'?'Hospital System':'Supermarket System'} • ${pay==='online'?'Online':'Disconnect'}${region?' • '+region:''}`;
+if(region) showRegionBox(`Goobtaada waa ${region} — code-ka bixinta ayaa la diyaariyay.`);
+return final;
+}
+
+// Load notifications
+(function loadNotifications(){
+try {
+const notif = localStorage.getItem('cs_shared_notification');
+if(notif){
+const data = JSON.parse(notif);
+if(Date.now() - data.time < 7*24*60*60*1000){
+showNotification(data.message, data.type || 'info');
+}
+}
+} catch(e){}
+})();
+
+// Event Listeners
+elements.calc.addEventListener('click', () => calcPrice());
+elements.product.addEventListener('change', () => { loadMediaPreview(); calcPrice(); });
+
+elements.payBtn.addEventListener('click', function(){
+const region = elements.region.value, prod = elements.product.value;
+if(!prod || !region){ alert('⚠️ Fadlan dooro region iyo product-ka.'); return; }
+const final = calcPrice();
+const r = regionCodes[region] || regionCodes['Other'];
+const ussd = r.code + final + '#';
+elements.note.style.display = 'block';
+elements.note.innerHTML = `<strong>📱 Tilmaam Bixin:</strong> Fadlan qor koodka hoose USSD:<code class="region-code">${ussd}</code>Markaad dhameyso, riix "Dalbo & Keydi" si dalabkaaga loo diiwaangeliyo.`;
+try{ window.location.href = 'tel:' + encodeURIComponent(ussd); }catch(e){}
+});
+
+elements.place.addEventListener('click', function(){
+const name = elements.name.value.trim(), phone = elements.phone.value.trim(), region = elements.region.value, prod = elements.product.value, payment = elements.payment.value;
+if(!name || !phone || !region || !prod){ alert('⚠️ Fadlan buuxi dhammaan qaybaha muhiimka ah.'); return; }
+const final = calcPrice();
+const order = {id: 'ORD' + Date.now(), name, phone, region, product: prod, payment, price: final, time: new Date().toISOString(), status: 'pending'};
+const existing = JSON.parse(localStorage.getItem('cs_orders') || '[]');
+existing.push(order);
+localStorage.setItem('cs_orders', JSON.stringify(existing));
+alert('✅ Dalabkaaga waa la diiwaangeliyey. Haddii aad lacag dirtay, fadlan hubi invoice ama nala soo xiriir.');
+showRegionBox(`Dalabka waa la keydiyay. ID: ${order.id}`);
+localStorage.setItem('cs_order_updated', Date.now());
+elements.name.value = elements.phone.value = '';
+});
+
+elements.shareBtn.addEventListener('click', function(){
+const prod = elements.product.value, region = elements.region.value, base = location.href.split('?')[0], params = new URLSearchParams();
+if(prod) params.set('product', prod);
+if(region) params.set('region', region);
+const link = base + '?' + params.toString();
+if(navigator.share){
+navigator.share({title:'Dalab - C.S Company', text:'Dalbo system-ka C.S Company', url:link})
+.catch(() => prompt('Linkiig: (copy) ', link));
+}else{
+prompt('Nuqul ka samee linkigan oo u dir macaamiisha:', link);
+}
+});
+
+// Modal click
+document.getElementById('mediaModal').addEventListener('click', closeModal);
+
+// Load initial data
+loadHeaderLogo();
+loadAPKLinks();
+
+// Auto-refresh for media updates
+setInterval(() => {
+loadHeaderLogo();
+if(elements.product.value) loadMediaPreview();
+loadAPKLinks();
+}, 3000);
+
+// Prefill from URL
+(function prefill(){
+const p = new URLSearchParams(location.search);
+if(p.get('product')) elements.product.value = p.get('product');
+if(p.get('region')) elements.region.value = p.get('region');
+if(p.get('product') || p.get('region')) calcPrice();
+})();
+</script>
+</body>
+</html>
