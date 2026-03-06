@@ -7,54 +7,528 @@
 <title>C.S Company - Dalabka</title>
 <style>
 :root{
---blue:#0b4f8b;--accent:#0b6fb5;--light:#f6f9fc;--card:#fff;--muted:#6b7280;--danger:#ff4d4f;--success:#16a34a;
---shadow:0 12px 30px rgba(11,79,139,0.08);--shadow-sm:0 6px 18px rgba(11,79,139,0.05);
---radius:12px;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+--primary:#0b4f8b;
+--accent:#0b6fb5;
+--glass:rgba(255,255,255,0.85);
+--light:#f0f4f8;
+--card:#ffffff;
+--muted:#64748b;
+--danger:#ef4444;
+--success:#22c55e;
+--whatsapp:#25D366;
+--whatsapp-business:#128C7E;
+--shadow:0 20px 40px rgba(11,79,139,0.12);
+--shadow-sm:0 4px 12px rgba(11,79,139,0.08);
+--radius:16px;
+--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-*{box-sizing:border-box}
-body{background:var(--light);margin:0;padding:24px;display:flex;justify-content:center;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;color:#1e293b;-webkit-font-smoothing:antialiased}
-.wrap{max-width:900px;width:100%;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;animation:fadeIn 0.5s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-header{background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.header-logo{height:40px;width:auto;margin-right:12px;border-radius:4px}
-header h1{margin:0;font-size:20px;font-weight:700;display:flex;align-items:center}
-header .subtitle{opacity:0.9;font-size:13px}
-header .user{font-weight:800}
-main{display:grid;grid-template-columns:1fr 360px;gap:24px;padding:24px}
-@media(max-width:880px){main{grid-template-columns:1fr}}
-section h2{margin:0 0 18px 0;color:var(--blue);font-size:22px}
-label{display:block;font-weight:700;margin-top:16px;color:var(--muted)}
-input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #e6eef8;margin-top:6px;font-size:14px;transition:var(--transition)}
-input:focus,select:focus,textarea:focus{outline:3px solid rgba(11,111,181,0.18);border-color:var(--accent)}
-textarea{resize:vertical;min-height:100px}
-.btn{background:var(--blue);color:#fff;padding:12px 18px;border-radius:8px;border:none;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
-.btn:hover{opacity:0.95;transform:translateY(-1px)}
-.btn:disabled{opacity:0.6;cursor:not-allowed}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+background:linear-gradient(135deg,#e0e7ff 0%,#f0f4f8 50%,#e0e7ff 100%);
+background-attachment:fixed;
+margin:0;
+padding:24px;
+display:flex;
+justify-content:center;
+font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+line-height:1.6;
+color:#1e293b;
+-webkit-font-smoothing:antialiased;
+min-height:100vh;
+}
+.wrap{
+max-width:900px;
+width:100%;
+background:var(--glass);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+overflow:hidden;
+animation:fadeIn 0.6s ease;
+border:1px solid rgba(255,255,255,0.5);
+}
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(30px)}
+to{opacity:1;transform:translateY(0)}
+}
+header{
+background:linear-gradient(135deg,var(--primary),var(--accent));
+color:#fff;
+padding:28px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:16px;
+position:relative;
+overflow:hidden;
+}
+header::before{
+content:'';
+position:absolute;
+top:-50%;
+right:-20%;
+width:400px;
+height:400px;
+background:rgba(255,255,255,0.1);
+border-radius:50%;
+animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{
+0%,100%{transform:scale(1);opacity:0.5}
+50%{transform:scale(1.1);opacity:0.3}
+}
+.header-logo{
+height:48px;
+width:auto;
+margin-right:14px;
+border-radius:8px;
+background:#fff;
+padding:4px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+header h1{
+margin:0;
+font-size:24px;
+font-weight:800;
+display:flex;
+align-items:center;
+position:relative;
+z-index:1;
+text-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+header .subtitle{
+opacity:0.95;
+font-size:14px;
+font-weight:500;
+position:relative;
+z-index:1;
+}
+header .user{
+font-weight:800;
+font-size:15px;
+background:rgba(255,255,255,0.2);
+padding:6px 14px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+}
+main{
+display:grid;
+grid-template-columns:1fr 380px;
+gap:28px;
+padding:32px;
+}
+@media(max-width:900px){main{grid-template-columns:1fr;padding:24px}}
+section h2{
+margin:0 0 24px 0;
+color:var(--primary);
+font-size:26px;
+font-weight:800;
+display:flex;
+align-items:center;
+gap:12px;
+}
+label{
+display:block;
+font-weight:700;
+margin-top:18px;
+color:var(--muted);
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+input,select,textarea{
+width:100%;
+padding:14px 16px;
+border-radius:12px;
+border:2px solid #e2e8f0;
+margin-top:8px;
+font-size:15px;
+transition:var(--transition);
+background:#fff;
+}
+input:focus,select:focus,textarea:focus{
+outline:none;
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(11,111,181,0.1);
+transform:translateY(-2px);
+}
+textarea{
+resize:vertical;
+min-height:120px;
+font-family:inherit;
+}
+.btn{
+background:var(--primary);
+color:#fff;
+padding:14px 24px;
+border-radius:12px;
+border:none;
+cursor:pointer;
+font-weight:700;
+font-size:15px;
+transition:var(--transition);
+display:inline-flex;
+align-items:center;
+gap:10px;
+box-shadow:0 4px 14px rgba(11,79,139,0.3);
+position:relative;
+overflow:hidden;
+}
+.btn::after{
+content:'';
+position:absolute;
+top:50%;
+left:50%;
+width:0;
+height:0;
+background:rgba(255,255,255,0.3);
+border-radius:50%;
+transform:translate(-50%,-50%);
+transition:width 0.6s,height 0.6s;
+}
+.btn:hover::after{
+width:300px;
+height:300px;
+}
+.btn:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 25px rgba(11,79,139,0.4);
+}
+.btn:disabled{
+opacity:0.6;
+cursor:not-allowed;
+transform:none;
+}
 .btn.secondary{background:var(--accent)}
-.btn.success{background:var(--success)}
+.btn.success{
+background:linear-gradient(135deg,var(--success),#16a34a);
+box-shadow:0 4px 14px rgba(34,197,94,0.3);
+}
+.btn.success:hover{box-shadow:0 8px 25px rgba(34,197,94,0.4)}
+.btn.whatsapp{
+background:linear-gradient(135deg,var(--whatsapp),#128C7E);
+box-shadow:0 4px 14px rgba(37,211,102,0.3);
+font-size:16px;
+padding:16px 28px;
+}
+.btn.whatsapp:hover{
+box-shadow:0 8px 25px rgba(37,211,102,0.4);
+transform:translateY(-3px) scale(1.02);
+}
+.btn.whatsapp-business{
+background:linear-gradient(135deg,var(--whatsapp-business),#075E54);
+box-shadow:0 4px 14px rgba(18,140,126,0.3);
+font-size:16px;
+padding:16px 28px;
+}
+.btn.whatsapp-business:hover{
+box-shadow:0 8px 25px rgba(18,140,126,0.4);
+transform:translateY(-3px) scale(1.02);
+}
 .btn.danger{background:var(--danger)}
-.btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--blue)}
-.summary{background:linear-gradient(135deg,#f4fbff,#e6f4ff);padding:20px;border-radius:var(--radius);border:1px solid #e9f2fb;position:sticky;top:20px}
-.summary h3{margin:0 0 12px 0;color:var(--blue)}
-.price{font-size:32px;font-weight:800;color:var(--blue);margin:12px 0}
-#note{display:none;background:#fff7f7;border-left:4px solid var(--danger);padding:12px;border-radius:6px;margin-top:12px;animation:slideIn 0.3s ease}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-#regionBox{display:none;position:fixed;bottom:24px;right:24px;background:var(--blue);color:#fff;padding:14px 16px;border-radius:var(--radius);box-shadow:var(--shadow);z-index:1000;animation:slideUp 0.3s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
-.notification-banner{background:var(--accent);color:#fff;padding:12px;border-radius:8px;margin-bottom:16px;display:none;animation:fadeIn 0.5s ease}
+.btn.ghost{
+background:transparent;
+color:var(--primary);
+border:2px solid var(--primary);
+}
+.summary{
+background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(240,249,255,0.9));
+padding:28px;
+border-radius:var(--radius);
+border:1px solid rgba(255,255,255,0.6);
+position:sticky;
+top:24px;
+backdrop-filter:blur(10px);
+box-shadow:var(--shadow-sm);
+}
+.summary h3{
+margin:0 0 16px 0;
+color:var(--primary);
+font-size:20px;
+font-weight:800;
+}
+.price{
+font-size:42px;
+font-weight:900;
+color:var(--primary);
+margin:16px 0;
+text-shadow:0 2px 4px rgba(11,79,139,0.1);
+background:linear-gradient(135deg,var(--primary),var(--accent));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+#note{
+display:none;
+background:linear-gradient(135deg,#fef2f2,#fee2e2);
+border-left:4px solid var(--danger);
+padding:16px;
+border-radius:12px;
+margin-top:16px;
+animation:slideIn 0.4s ease;
+font-weight:500;
+}
+@keyframes slideIn{
+from{opacity:0;transform:translateX(-30px)}
+to{opacity:1;transform:translateX(0)}
+}
+#regionBox{
+display:none;
+position:fixed;
+bottom:28px;
+right:28px;
+background:var(--primary);
+color:#fff;
+padding:18px 22px;
+border-radius:var(--radius);
+box-shadow:0 12px 40px rgba(11,79,139,0.3);
+z-index:1000;
+animation:slideUp 0.4s ease;
+max-width:320px;
+font-weight:500;
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.2);
+}
+@keyframes slideUp{
+from{opacity:0;transform:translateY(30px)}
+to{opacity:1;transform:translateY(0)}
+}
+footer{
+padding:24px;
+text-align:center;
+color:var(--muted);
+font-size:14px;
+font-weight:500;
+background:rgba(255,255,255,0.5);
+border-top:1px solid rgba(0,0,0,0.05);
+}
+.notification-banner{
+background:linear-gradient(135deg,var(--accent),#0ea5e9);
+color:#fff;
+padding:16px 20px;
+border-radius:12px;
+margin-bottom:20px;
+display:none;
+animation:fadeIn 0.5s ease;
+font-weight:600;
+box-shadow:0 4px 12px rgba(11,111,181,0.2);
+border:1px solid rgba(255,255,255,0.3);
+}
 .notification-banner.show{display:block}
-.img-preview{max-width:100%;border-radius:8px;margin-top:12px;border:1px solid #e6eef8;cursor:pointer;transition:var(--transition)}
-.img-preview:hover{transform:scale(1.02)}
-.video-preview{max-width:100%;border-radius:8px;margin-top:12px;box-shadow:var(--shadow-sm)}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center}
-.modal.show{display:flex}
-.modal img{max-width:90%;max-height:90%;border-radius:var(--radius)}
-.modal video{max-width:90%;max-height:90%;border-radius:var(--radius)}
-.region-code{background:#e6f4ff;padding:8px;border-radius:6px;font-family:monospace;font-size:13px;display:block;margin:8px 0}
-.apk-section{margin-top:16px;padding:16px;background:#f9fdff;border-radius:8px;border:1px solid #e9f2fb}
-.apk-button{display:inline-block;margin:8px 8px 0 0;padding:8px 12px;background:var(--success);color:#fff;text-decoration:none;border-radius:6px;font-size:13px;transition:var(--transition)}
-.apk-button:hover{opacity:0.9;transform:translateY(-1px)}
+.img-preview{
+max-width:100%;
+border-radius:12px;
+margin-top:16px;
+border:2px solid #e2e8f0;
+cursor:pointer;
+transition:var(--transition);
+box-shadow:var(--shadow-sm);
+}
+.img-preview:hover{
+transform:scale(1.03) rotate(1deg);
+border-color:var(--accent);
+box-shadow:0 12px 30px rgba(11,79,139,0.15);
+}
+.video-preview{
+max-width:100%;
+border-radius:12px;
+margin-top:16px;
+box-shadow:var(--shadow-sm);
+border:2px solid #e2e8f0;
+}
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+z-index:2000;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(5px);
+}
+.modal.show{display:flex;animation:fadeIn 0.3s ease}
+.modal img,.modal video{
+max-width:92%;
+max-height:92%;
+border-radius:16px;
+box-shadow:0 25px 60px rgba(0,0,0,0.5);
+border:3px solid rgba(255,255,255,0.1);
+}
+.region-code{
+background:linear-gradient(135deg,#e0f2fe,#dbeafe);
+padding:12px;
+border-radius:10px;
+font-family:'Courier New',monospace;
+font-size:15px;
+display:block;
+margin:12px 0;
+color:var(--primary);
+font-weight:700;
+border:2px dashed var(--accent);
+letter-spacing:1px;
+}
+.apk-section{
+margin-top:20px;
+padding:20px;
+background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+border-radius:12px;
+border:2px solid #bbf7d0;
+}
+.apk-button{
+display:inline-block;
+margin:8px 8px 0 0;
+padding:10px 16px;
+background:linear-gradient(135deg,var(--success),#16a34a);
+color:#fff;
+text-decoration:none;
+border-radius:8px;
+font-size:14px;
+font-weight:600;
+transition:var(--transition);
+box-shadow:0 4px 12px rgba(34,197,94,0.25);
+}
+.apk-button:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 20px rgba(34,197,94,0.35);
+}
+.whatsapp-float{
+position:fixed;
+bottom:28px;
+left:28px;
+width:64px;
+height:64px;
+background:linear-gradient(135deg,var(--whatsapp),#128C7E);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-size:32px;
+text-decoration:none;
+box-shadow:0 8px 30px rgba(37,211,102,0.4);
+transition:var(--transition);
+z-index:999;
+animation:bounce 2s infinite;
+border:3px solid rgba(255,255,255,0.3);
+}
+@keyframes bounce{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
+.whatsapp-float:hover{
+transform:scale(1.15) rotate(10deg);
+box-shadow:0 12px 40px rgba(37,211,102,0.5);
+}
+.badge{
+display:inline-block;
+padding:4px 12px;
+background:linear-gradient(135deg,var(--accent),#0ea5e9);
+color:#fff;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+margin-left:8px;
+box-shadow:0 2px 8px rgba(11,111,181,0.2);
+}
+.status-pending{
+background:linear-gradient(135deg,#fef3c7,#fde68a);
+color:#92400e;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:700;
+display:inline-block;
+margin-top:8px;
+}
+.divider{
+height:2px;
+background:linear-gradient(90deg,transparent,var(--accent),transparent);
+margin:24px 0;
+opacity:0.3;
+}
+.whatsapp-selector{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:var(--card);
+padding:28px;
+border-radius:var(--radius);
+box-shadow:0 25px 60px rgba(0,0,0,0.3);
+z-index:3000;
+text-align:center;
+max-width:400px;
+width:90%;
+animation:popIn 0.3s ease;
+border:1px solid rgba(0,0,0,0.1);
+}
+.whatsapp-selector.show{display:block}
+.whatsapp-selector h3{
+margin:0 0 20px 0;
+color:var(--primary);
+font-size:20px;
+}
+.whatsapp-selector .btn{
+width:100%;
+margin:10px 0;
+justify-content:center;
+font-size:16px;
+padding:18px;
+}
+.whatsapp-selector .close-btn{
+position:absolute;
+top:12px;
+right:12px;
+background:none;
+border:none;
+font-size:24px;
+cursor:pointer;
+color:var(--muted);
+width:36px;
+height:36px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:var(--transition);
+}
+.whatsapp-selector .close-btn:hover{
+background:#f1f5f9;
+color:var(--danger);
+}
+.overlay{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:2500;
+backdrop-filter:blur(3px);
+}
+.overlay.show{display:block;animation:fadeIn 0.3s ease}
+@keyframes popIn{
+from{opacity:0;transform:translate(-50%,-50%) scale(0.8)}
+to{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+.price-tag{
+display:inline-flex;
+align-items:center;
+gap:6px;
+background:linear-gradient(135deg,#fef3c7,#fde68a);
+color:#92400e;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:700;
+margin-top:8px;
+}
 </style>
 </head>
 <body>
@@ -62,11 +536,11 @@ footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
 <header>
 <div style="display:flex;align-items:center">
 <img id="headerLogo" class="header-logo" style="display:none" alt="Logo">
-<h1>C.S Company Official Portal</h1>
+<h1>🏢 C.S Company</h1>
 </div>
 <div style="text-align:right">
-<div class="subtitle">Dalbo Pharmacy & Hospital Systems</div>
-<div class="user">Software Engineer</div>
+<div class="subtitle">💊 Pharmacy & 🏥 Hospital Systems</div>
+<div class="user">👨‍💻 Software Engineer</div>
 </div>
 </header>
 
@@ -77,85 +551,140 @@ footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
 <section>
 <h2>📝 Foomka Dalabka</h2>
 
-<label>Magaca (Shirkad / Qof)</label>
-<input id="name" placeholder="Magacaaga" autocomplete="name" required>
+<label>👤 Magaca (Shirkad / Qof)</label>
+<input id="name" placeholder="Geli magacaaga oo dhan" autocomplete="name" required>
 
-<label>Number (Phone)</label>
+<label>📱 Number-ka Telefoonka</label>
 <input id="phone" placeholder="061 XXX XXXX" type="tel" autocomplete="tel" required>
 
-<label>Region (Gobolka)</label>
+<label>🌍 Region (Gobolka)</label>
 <select id="region" required>
-<option value="">-- Dooro --</option>
-<option>Banadir</option><option>Puntland</option><option>Hargeysa</option>
-<option>Galmudug</option><option>Koonfur Galbeed</option><option>Other</option>
+<option value="">-- Dooro Gobolka --</option>
+<option value="Banadir">📍 Banadir (Mogadishu)</option>
+<option value="Puntland">📍 Puntland</option>
+<option value="Hargeysa">📍 Hargeysa</option>
+<option value="Galmudug">📍 Galmudug</option>
+<option value="Koonfur Galbeed">📍 Koonfur Galbeed</option>
+<option value="Other">📍 Gobol Kale</option>
 </select>
 
-<label>Dooro System</label>
+<label>💻 Dooro System-ka</label>
 <select id="product" required>
-<option value="">-- Dooro --</option>
-<option value="pharmacy">Pharmacy System</option>
-<option value="hospital">Hospital System</option>
-<option value="supermarket">Supermarket System</option>
+<option value="">-- Dooro System-ka --</option>
+<option value="pharmacy">💊 Pharmacy System <span class="price-tag">💰 $60</span></option>
+<option value="hospital">🏥 Hospital System <span class="price-tag">💰 $150</span></option>
+<option value="supermarket">🛒 Supermarket System <span class="price-tag">💰 $50</span></option>
 </select>
 
 <!-- MEDIA PREVIEW -->
-<div id="mediaPreview" style="display:none;margin-top:12px"></div>
+<div id="mediaPreview" style="display:none;margin-top:16px"></div>
 
-<label>Qaabka Bixinta</label>
+<label>💳 Qaabka Bixinta</label>
 <select id="payment" required>
-<option value="online">Online (USSD)</option>
-<option value="disconnect">Disconnect / Offline</option>
+<option value="online">📲 Online (USSD)</option>
+<option value="disconnect">🔌 Disconnect / Offline</option>
 </select>
 
-<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+<div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
 <button class="btn" id="calc">🧮 Xisaabi Qiimaha</button>
-<button class="btn success" id="place">💾 Dalbo & Keydi</button>
+<button class="btn whatsapp" id="place">💬 Dalbo & U dir WhatsApp</button>
 </div>
 
 <div id="note"></div>
+
+<div class="divider"></div>
+
+<div style="background:linear-gradient(135deg,#fefce8,#fef9c3);padding:20px;border-radius:12px;border:2px solid #fde047;margin-top:20px">
+<h4 style="margin:0 0 12px 0;color:#854d0e;font-size:16px">💡 Talooyin Muhiim ah:</h4>
+<ul style="margin:0;padding-left:20px;color:#854d0e;font-size:14px;line-height:1.8">
+<li>💊 Pharmacy System: <strong>$60</strong> - Maarifnta daawooyinka</li>
+<li>🏥 Hospital System: <strong>$150</strong> - Maamulka isbitaallada</li>
+<li>🛒 Supermarket System: <strong>$50</strong> - Maamulka dukaamada</li>
+<li>📲 Dhammaan qiimaha waa isku mid online iyo offline</li>
+<li>⏱️ Dalabkaaga waa la xaqiijin doonaa 24 saacadood gudaheed</li>
+</ul>
+</div>
 </section>
 
 <aside class="summary">
 <h3>📦 Faahfaahinta Dalabka</h3>
-<div id="choosen">—</div>
+<div id="choosen" style="font-size:15px;color:var(--muted);margin-bottom:12px">—</div>
 <div class="price" id="price">$0</div>
 
-<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
 <button class="btn success" id="payBtn">💳 Bixi Hadda (USSD)</button>
 <button class="btn secondary" id="shareBtn">🔗 Linkiig u dir</button>
 </div>
 
-<div style="margin-top:14px;color:var(--muted);font-size:13px">
-<strong>Qiimaha:</strong><br>
-Pharmacy: $250 (online) / $150 (offline)<br>
-Hospital: $350 (online) / $250 (offline)<br>
-Supermarket: $150 (online/offline)<br>
-<em style="color:var(--blue)">📅 Khamiis = Discount gaar ah!</em>
+<div style="margin-top:20px;color:var(--muted);font-size:14px;line-height:1.8;background:rgba(255,255,255,0.6);padding:16px;border-radius:10px">
+<strong style="color:var(--primary);font-size:16px;display:block;margin-bottom:12px">💰 Qiimaha Dhammaan:</strong>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:10px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+<span>💊 Pharmacy System</span>
+<strong style="color:var(--success);font-size:18px">$60</strong>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:10px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+<span>🏥 Hospital System</span>
+<strong style="color:var(--success);font-size:18px">$150</strong>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;padding:10px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+<span>🛒 Supermarket System</span>
+<strong style="color:var(--success);font-size:18px">$50</strong>
+</div>
+<div style="margin-top:12px;padding-top:12px;border-top:2px solid #e2e8f0;color:var(--primary);font-weight:700;text-align:center;font-size:13px">📲 Online & Offline waa isku qiimaha</div>
 </div>
 
 <!-- APK DOWNLOAD SECTION -->
 <div class="apk-section">
-<h4 style="margin:0 0 10px 0;color:var(--blue)">📱 Download APK</h4>
-<div id="apkLinks"></div>
+<h4 style="margin:0 0 12px 0;color:var(--success);font-size:16px">📱 Download APK</h4>
+<div id="apkLinks" style="font-size:13px;color:var(--muted)">Ma jiraan apps la soo dejiyo hadda...</div>
+</div>
+
+<div id="orderStatus" style="display:none;margin-top:16px;padding:16px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:10px;border:2px solid #86efac;text-align:center">
+<div style="font-size:48px;margin-bottom:8px">✅</div>
+<div style="font-weight:800;color:var(--success);font-size:18px">Dalab La Keydiyay!</div>
+<div style="font-size:13px;color:var(--muted);margin-top:4px">Fariinta WhatsApp ayaa u dirtay 0613195143</div>
 </div>
 </aside>
 </main>
 
 <footer>
-📞 <a href="tel:0613195143" style="color:var(--blue);font-weight:700">0613195143</a>
-<!-- NO ADMIN LINK -->
+<div style="margin-bottom:8px;font-size:16px">📞 <a href="tel:0613195143" style="color:var(--primary);font-weight:800;text-decoration:none;font-size:18px">0613195143</a></div>
+<div style="font-size:13px;opacity:0.8">© 2024 C.S Company - Dhammaan xuquuqaha way ilaaliyeen</div>
 </footer>
 </div>
 
 <div id="regionBox"></div>
 <div id="mediaModal" class="modal"></div>
 
+<!-- WhatsApp Selector Modal -->
+<div class="overlay" id="overlay"></div>
+<div class="whatsapp-selector" id="whatsappSelector">
+<button class="close-btn" onclick="closeWhatsAppSelector()">×</button>
+<h3>📱 Dooro Nooca WhatsApp</h3>
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Fadlan dooro nooca WhatsApp aad isticmaasho:</p>
+<button class="btn whatsapp" onclick="sendWhatsApp('personal')">
+💬 WhatsApp Caadiga ah<br>
+<small style="font-size:12px;opacity:0.9">WhatsApp Messenger</small>
+</button>
+<button class="btn whatsapp-business" onclick="sendWhatsApp('business')">
+💼 WhatsApp Business<br>
+<small style="font-size:12px;opacity:0.9">WhatsApp Business App</small>
+</button>
+<div style="margin-top:16px;font-size:13px;color:var(--muted);background:#f8fafc;padding:12px;border-radius:8px">
+<strong>Talo:</strong> Haddii aadan hubin, dooro <strong>WhatsApp Caadiga ah</strong>
+</div>
+</div>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/252613195143" target="_blank" class="whatsapp-float" title="La xiriir WhatsApp">💬</a>
+
 <script>
+const WHATSAPP_NUMBER = '252613195143';
 const NEW_NUMBER = '0613195143';
 const prices = {
-pharmacy: {regular: 250, disconnect: 150},
-hospital: {regular: 350, disconnect: 250},
-supermarket: {regular: 150, disconnect: 150}
+pharmacy: {regular: 60, disconnect: 60},
+hospital: {regular: 150, disconnect: 150},
+supermarket: {regular: 50, disconnect: 50}
 };
 const regionCodes = {
 Banadir: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER},
@@ -167,9 +696,11 @@ Other: {code: `*712*${NEW_NUMBER}*`, tel: NEW_NUMBER}
 };
 
 const elements = {};
-['name','phone','region','product','payment','price','choosen','note','regionBox','payBtn','place','calc','shareBtn','mediaPreview','notificationBanner','headerLogo','apkLinks'].forEach(id => {
+['name','phone','region','product','payment','price','choosen','note','regionBox','payBtn','place','calc','shareBtn','mediaPreview','notificationBanner','headerLogo','apkLinks','orderStatus','whatsappSelector','overlay'].forEach(id => {
 elements[id] = document.getElementById(id);
 });
+
+let currentOrderData = null;
 
 function isThursday(){ return new Date().getDay() === 4; }
 function formatPrice(p){ return `$${p}`; }
@@ -182,11 +713,9 @@ setTimeout(() => banner.classList.remove('show'), 8000);
 }
 
 function showRegionBox(text){
-elements.regionBox.innerHTML = `📍 ${text} &nbsp; 
-<a href="https://wa.me/${NEW_NUMBER}" target="_blank" style="color:#fff;text-decoration:underline;margin-left:8px">WhatsApp</a> 
-<a href="tel:${NEW_NUMBER}" style="color:#fff;text-decoration:underline;margin-left:8px">Wac</a>`;
+elements.regionBox.innerHTML = `📍 ${text} <br><small style="opacity:0.9;display:block;margin-top:6px">La xiriir: <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" style="color:#fff;text-decoration:underline">WhatsApp</a> | <a href="tel:${NEW_NUMBER}" style="color:#fff;text-decoration:underline">Wac</a></small>`;
 elements.regionBox.style.display = 'block';
-setTimeout(() => elements.regionBox.style.display = 'none', 7000);
+setTimeout(() => elements.regionBox.style.display = 'none', 8000);
 }
 
 function loadHeaderLogo(){
@@ -206,7 +735,6 @@ preview.style.display = 'none';
 if(!product) return;
 
 if(product === 'supermarket'){
-// Show image
 const imgData = localStorage.getItem('cs_supermarket_image');
 if(imgData){
 const img = document.createElement('img');
@@ -216,7 +744,6 @@ img.onclick = () => openModal('image', imgData);
 preview.appendChild(img);
 preview.style.display = 'block';
 }
-// Show video
 const videoData = localStorage.getItem('cs_supermarket_video');
 if(videoData){
 const video = document.createElement('video');
@@ -228,7 +755,6 @@ preview.appendChild(video);
 preview.style.display = 'block';
 }
 } else {
-// Show other system images
 const imgData = localStorage.getItem(`cs_${product}_image`);
 if(imgData){
 const img = document.createElement('img');
@@ -245,12 +771,16 @@ function loadAPKLinks(){
 const apks = JSON.parse(localStorage.getItem('cs_apk_files') || '{}');
 const linksContainer = elements.apkLinks;
 linksContainer.innerHTML = '';
+if(Object.keys(apks).length === 0){
+linksContainer.innerHTML = '<span style="color:var(--muted)">Ma jiraan apps la soo dejiyo hadda...</span>';
+return;
+}
 Object.entries(apks).forEach(([system, data]) => {
 const link = document.createElement('a');
 link.href = data.data;
 link.download = data.name;
 link.className = 'apk-button';
-link.textContent = `📱 Download ${system} APK`;
+link.textContent = `📱 ${system} APK`;
 linksContainer.appendChild(link);
 });
 }
@@ -258,9 +788,9 @@ linksContainer.appendChild(link);
 function openModal(type, src){
 const modal = document.getElementById('mediaModal');
 if(type === 'image'){
-modal.innerHTML = `<img src="${src}" alt="Preview" style="max-width:90%;max-height:90%;border-radius:12px">`;
+modal.innerHTML = `<img src="${src}" alt="Preview" onclick="closeModal()">`;
 } else {
-modal.innerHTML = `<video src="${src}" controls autoplay style="max-width:90%;max-height:90%;border-radius:12px"></video>`;
+modal.innerHTML = `<video src="${src}" controls autoplay onclick="event.stopPropagation()"></video>`;
 }
 modal.classList.add('show');
 }
@@ -271,12 +801,26 @@ document.getElementById('mediaModal').classList.remove('show');
 
 function calcPrice(){
 const prod = elements.product.value, pay = elements.payment.value, region = elements.region.value;
-if(!prod){ alert('⚠️ Fadlan dooro product'); return null; }
-let final = pay === 'disconnect' ? prices[prod].disconnect : prices[prod].regular;
-if(isThursday() && prod !== 'supermarket') final = Math.min(final, prices[prod].disconnect);
+if(!prod){ 
+const note = elements.note;
+note.style.display = 'block';
+note.innerHTML = '<strong>⚠️ Fadlan dooro system-ka aad rabto!</strong>';
+setTimeout(() => note.style.display = 'none', 3000);
+return null; 
+}
+
+let final = prices[prod].regular;
+
 elements.price.innerText = formatPrice(final);
-elements.choosen.innerText = `${prod==='pharmacy'?'Pharmacy System':prod==='hospital'?'Hospital System':'Supermarket System'} • ${pay==='online'?'Online':'Disconnect'}${region?' • '+region:''}`;
-if(region) showRegionBox(`Goobtaada waa ${region} — code-ka bixinta ayaa la diyaariyay.`);
+elements.choosen.innerHTML = `
+<div style="margin-bottom:8px"><strong style="color:var(--primary);font-size:16px">${prod==='pharmacy'?'💊 Pharmacy System':prod==='hospital'?'🏥 Hospital System':'🛒 Supermarket System'}</strong></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;font-size:13px">
+<span style="background:#e0f2fe;padding:4px 10px;border-radius:20px">💳 ${pay==='online'?'Online USSD':'Offline'}</span>
+${region ? `<span style="background:#f3e8ff;padding:4px 10px;border-radius:20px">📍 ${region}</span>` : ''}
+</div>
+`;
+
+if(region) showRegionBox(`Goobtaada: ${region}`);
 return final;
 }
 
@@ -296,30 +840,139 @@ showNotification(data.message, data.type || 'info');
 // Event Listeners
 elements.calc.addEventListener('click', () => calcPrice());
 elements.product.addEventListener('change', () => { loadMediaPreview(); calcPrice(); });
+elements.payment.addEventListener('change', () => calcPrice());
 
 elements.payBtn.addEventListener('click', function(){
 const region = elements.region.value, prod = elements.product.value;
-if(!prod || !region){ alert('⚠️ Fadlan dooro region iyo product-ka.'); return; }
+if(!prod || !region){ 
+elements.note.style.display = 'block';
+elements.note.innerHTML = '<strong>⚠️ Fadlan dooro region iyo product-ka!</strong>';
+setTimeout(() => note.style.display = 'none', 3000);
+return; 
+}
 const final = calcPrice();
 const r = regionCodes[region] || regionCodes['Other'];
 const ussd = r.code + final + '#';
 elements.note.style.display = 'block';
-elements.note.innerHTML = `<strong>📱 Tilmaam Bixin:</strong> Fadlan qor koodka hoose USSD:<code class="region-code">${ussd}</code>Markaad dhameyso, riix "Dalbo & Keydi" si dalabkaaga loo diiwaangeliyo.`;
+elements.note.innerHTML = `<strong>📱 Tilmaam Bixin:</strong><br>Fadlan qor koodka USSD:<code class="region-code">${ussd}</code>Markaad dhameyso, riix <strong>"Dalbo & U dir WhatsApp"</strong>`;
 try{ window.location.href = 'tel:' + encodeURIComponent(ussd); }catch(e){}
 });
 
+function openWhatsAppSelector(){
+elements.whatsappSelector.classList.add('show');
+elements.overlay.classList.add('show');
+}
+
+function closeWhatsAppSelector(){
+elements.whatsappSelector.classList.remove('show');
+elements.overlay.classList.remove('show');
+}
+
+function sendWhatsApp(type){
+closeWhatsAppSelector();
+if(!currentOrderData) return;
+
+const {orderId, name, phone, region, prod, payment, final} = currentOrderData;
+const productName = prod==='pharmacy'?'💊 Pharmacy System':prod==='hospital'?'🏥 Hospital System':'🛒 Supermarket System';
+const paymentType = payment==='online'?'📲 Online (USSD)':'🔌 Disconnect/Offline';
+
+const whatsappMsg = `*🏢 C.S Company - Dalab Cusub*%0A%0A` +
+  `*🆔 Order ID:* ${orderId}%0A` +
+  `*👤 Magaca:* ${name}%0A` +
+  `*📱 Phone:* ${phone}%0A` +
+  `*📍 Gobol:* ${region}%0A` +
+  `*💻 System:* ${productName}%0A` +
+  `*💳 Bixin:* ${paymentType}%0A` +
+  `*💰 Qiimaha:* $${final}%0A` +
+  `*📅 Taariikhda:* ${new Date().toLocaleString('so-SO')}%0A%0A` +
+  `*⏳ Xaaladda:* Sugaya xaqiijin...%0A%0A` +
+  `Fadlan xaqiiji dalabkan.`;
+
+let whatsappUrl;
+if(type === 'business'){
+// WhatsApp Business API link
+whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${whatsappMsg}`;
+} else {
+// Regular WhatsApp
+whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`;
+}
+
+window.open(whatsappUrl, '_blank');
+
+// Show success
+elements.orderStatus.style.display = 'block';
+elements.note.style.display = 'block';
+elements.note.innerHTML = `<strong>✅ Dalabkaaga waa la keydiyay!</strong><br>Order ID: <code>${orderId}</code><br>Fariinta WhatsApp ${type==='business'?'Business':'caadiga ah'} ayaa la diray ${NEW_NUMBER}`;
+
+// Clear form
+elements.name.value = '';
+elements.phone.value = '';
+elements.region.value = '';
+elements.product.value = '';
+elements.payment.value = 'online';
+elements.price.innerText = '$0';
+elements.choosen.innerHTML = '—';
+
+// Hide success message after 5 seconds
+setTimeout(() => {
+elements.orderStatus.style.display = 'none';
+elements.note.style.display = 'none';
+}, 5000);
+
+localStorage.setItem('cs_order_updated', Date.now());
+}
+
 elements.place.addEventListener('click', function(){
 const name = elements.name.value.trim(), phone = elements.phone.value.trim(), region = elements.region.value, prod = elements.product.value, payment = elements.payment.value;
-if(!name || !phone || !region || !prod){ alert('⚠️ Fadlan buuxi dhammaan qaybaha muhiimka ah.'); return; }
+
+// Validation
+if(!name){ 
+elements.note.style.display = 'block';
+elements.note.innerHTML = '<strong>⚠️ Fadlan geli magacaaga!</strong>';
+elements.name.focus();
+return; 
+}
+if(!phone){ 
+elements.note.style.display = 'block';
+elements.note.innerHTML = '<strong>⚠️ Fadlan geli number-ka telefoonka!</strong>';
+elements.phone.focus();
+return; 
+}
+if(!region){ 
+elements.note.style.display = 'block';
+elements.note.innerHTML = '<strong>⚠️ Fadlan dooro gobolka!</strong>';
+return; 
+}
+if(!prod){ 
+elements.note.style.display = 'block';
+elements.note.innerHTML = '<strong>⚠️ Fadlan dooro system-ka!</strong>';
+return; 
+}
+
 const final = calcPrice();
-const order = {id: 'ORD' + Date.now(), name, phone, region, product: prod, payment, price: final, time: new Date().toISOString(), status: 'pending'};
+const orderId = 'ORD' + Date.now();
+const order = {
+id: orderId, 
+name, 
+phone, 
+region, 
+product: prod, 
+payment, 
+price: final, 
+time: new Date().toLocaleString('so-SO'), 
+status: 'pending'
+};
+
+// Save to localStorage
 const existing = JSON.parse(localStorage.getItem('cs_orders') || '[]');
 existing.push(order);
 localStorage.setItem('cs_orders', JSON.stringify(existing));
-alert('✅ Dalabkaaga waa la diiwaangeliyey. Haddii aad lacag dirtay, fadlan hubi invoice ama nala soo xiriir.');
-showRegionBox(`Dalabka waa la keydiyay. ID: ${order.id}`);
-localStorage.setItem('cs_order_updated', Date.now());
-elements.name.value = elements.phone.value = '';
+
+// Store order data for WhatsApp
+currentOrderData = {orderId, name, phone, region, prod, payment, final};
+
+// Open WhatsApp selector
+openWhatsAppSelector();
 });
 
 elements.shareBtn.addEventListener('click', function(){
@@ -337,6 +990,7 @@ prompt('Nuqul ka samee linkigan oo u dir macaamiisha:', link);
 
 // Modal click
 document.getElementById('mediaModal').addEventListener('click', closeModal);
+elements.overlay.addEventListener('click', closeWhatsAppSelector);
 
 // Load initial data
 loadHeaderLogo();
